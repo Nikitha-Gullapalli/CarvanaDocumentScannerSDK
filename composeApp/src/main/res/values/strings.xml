@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="capture_and_scan">Capture and Scan</string>
+    <string name="capture">Capture</string>
+    <string name="recognized_text_will_appear_here">Recognized text will appear here</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="capture_failed">Capture failed: %1$s</string>
+</resources>

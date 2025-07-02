@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="turquoise_blue">#00aed9</color>
+    <color name="colorPrimary">@color/turquoise_blue</color>
+
+</resources>
