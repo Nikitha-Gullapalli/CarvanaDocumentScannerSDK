@@ -1,5 +1,6 @@
 package com.carvana.carvana.interfaces
 
+import com.carvana.carvana.utils.ViewControllerHelper
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
@@ -11,7 +12,7 @@ import platform.Foundation.NSError
 import platform.Foundation.NSSearchPathForDirectoriesInDomains
 import platform.Foundation.NSUserDomainMask
 import platform.Foundation.timeIntervalSince1970
-import platform.UIKit.UIApplication
+import platform.UIKit.UIDevice
 import platform.UIKit.UIGraphicsBeginPDFContextToFile
 import platform.UIKit.UIGraphicsBeginPDFPageWithInfo
 import platform.UIKit.UIGraphicsEndPDFContext
@@ -42,19 +43,31 @@ actual class DocumentScanner {
         currentCallback = onResult
 
         try {
+            // Check if running on simulator
+            val isSimulator = UIDevice.currentDevice.model.contains("Simulator")
+            
+            if (isSimulator) {
+                onResult(ScanResult.Failure("Camera not available on iOS Simulator. Please test on a physical device."))
+                return
+            }
+            
             if (VNDocumentCameraViewController.isSupported()) {
                 val documentCamera = VNDocumentCameraViewController()
                 val delegate = DocumentCameraDelegate()
                 documentCamera.delegate = delegate
 
-                val rootVC = UIApplication.sharedApplication.keyWindow?.rootViewController
-                rootVC?.presentViewController(
-                    viewControllerToPresent = documentCamera,
-                    animated = true,
-                    completion = null
-                )
+                val rootVC = ViewControllerHelper.getPresentingViewController()
+                if (rootVC != null) {
+                    rootVC.presentViewController(
+                        viewControllerToPresent = documentCamera,
+                        animated = true,
+                        completion = null
+                    )
+                } else {
+                    onResult(ScanResult.Failure("Unable to present document scanner: No root view controller found"))
+                }
             } else {
-                onResult(ScanResult.Failure("Document scanning not supported on this device (iOS 13+)"))
+                onResult(ScanResult.Failure("Document scanning not supported on this device (requires iOS 13+)"))
             }
         } catch (e: Exception) {
             onResult(ScanResult.Failure("Failed to open document scanner: ${e.message}"))
