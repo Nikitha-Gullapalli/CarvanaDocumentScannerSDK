@@ -4,6 +4,7 @@ import com.carvana.carvana.sdk.CarvanaDocumentScannerSDK
 import com.carvana.carvana.sdk.DocumentResult
 import com.carvana.carvana.sdk.ScanOptions
 import com.carvana.carvana.sdk.UploadOptions
+import kotlin.concurrent.Volatile
 
 /**
  * Common interface for lifecycle management across platforms

@@ -1,3 +1,5 @@
+package com.carvana.carvana.resources
+
 object Strings {
     const val TIPS_GOOD_PHOTO = "Tips for a good photo"
     const val TAKE_A_PHOTO = "Take a Photo"

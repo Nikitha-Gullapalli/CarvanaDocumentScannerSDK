@@ -1,12 +1,5 @@
 package com.carvana.carvana
 
-import Strings
-import Strings.PLEASE_SCAN
-import Strings.SCAN_DOCUMENTS
-import Strings.TAG
-import Strings.TAKE_A_PHOTO
-import Strings.TIPS_GOOD_PHOTO
-import Strings.UPLOAD_FROM_LIBRARY
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,9 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import carvanadocumentscannersdk.composeapp.generated.resources.Res
-import carvanadocumentscannersdk.composeapp.generated.resources.ic_close_blue_accent
-import carvanadocumentscannersdk.composeapp.generated.resources.ic_ico_docupload
+import com.carvana.composeapp.generated.resources.Res
+import com.carvana.composeapp.generated.resources.ic_close_blue_accent
+import com.carvana.composeapp.generated.resources.ic_ico_docupload
 import com.carvana.carvana.interfaces.SDKCallbackManager
 import com.carvana.carvana.extensions.scanDocument
 import com.carvana.carvana.extensions.SetIconButton
@@ -45,6 +38,13 @@ import com.carvana.carvana.interfaces.DocumentUploader
 import com.carvana.carvana.interfaces.logger
 import com.carvana.carvana.resources.Primary
 import com.carvana.carvana.extensions.uploadDocument
+import com.carvana.carvana.resources.Strings
+import com.carvana.carvana.resources.Strings.PLEASE_SCAN
+import com.carvana.carvana.resources.Strings.SCAN_DOCUMENTS
+import com.carvana.carvana.resources.Strings.TAG
+import com.carvana.carvana.resources.Strings.TAKE_A_PHOTO
+import com.carvana.carvana.resources.Strings.TIPS_GOOD_PHOTO
+import com.carvana.carvana.resources.Strings.UPLOAD_FROM_LIBRARY
 
 
 @Composable

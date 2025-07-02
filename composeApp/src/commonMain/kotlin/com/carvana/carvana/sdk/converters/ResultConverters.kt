@@ -38,7 +38,7 @@ object ResultConverters {
                 )
                 
                 val metadata = DocumentMetadata(
-                    fileName = "scan_${System.currentTimeMillis()}.pdf",
+                    fileName = "scan_${documentId}.pdf",
                     fileSize = 0, // Would need actual file size
                     mimeType = "application/pdf",
                     source = DocumentSource.CAMERA_SCAN,

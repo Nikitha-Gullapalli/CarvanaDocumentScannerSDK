@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import carvanadocumentscannersdk.composeapp.generated.resources.Res
-import carvanadocumentscannersdk.composeapp.generated.resources.ic_bullet
+import com.carvana.composeapp.generated.resources.Res
+import com.carvana.composeapp.generated.resources.ic_bullet
 import com.carvana.carvana.getCarvanaBrandonBoldFont
 import com.carvana.carvana.getCarvanaBrandonRegularFont
 import com.carvana.carvana.resources.DarkNavyBlue

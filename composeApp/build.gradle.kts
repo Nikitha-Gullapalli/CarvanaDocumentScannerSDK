@@ -2,7 +2,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)  // Changed from androidApplication
+    // REMOVE FOR PROD: Change androidApplication to androidLibrary
+    // For testing: libs.plugins.androidApplication
+    // For production: libs.plugins.androidLibrary
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     `maven-publish`
@@ -61,7 +64,12 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-        // Remove applicationId, versionCode, versionName - not needed for libraries
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        // REMOVE FOR PROD: Remove the following 3 lines (applicationId, versionCode, versionName)
+        applicationId = "com.carvana.carvana"
+        versionCode = 1
+        versionName = "1.0"
+        // REMOVE FOR PROD: End of lines to remove
     }
     packaging {
         resources {
@@ -92,26 +100,11 @@ group = "com.carvana"
 version = "1.0.0"
 
 publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.carvana"
-            artifactId = "document-scanner-sdk"
-            version = "1.0.0"
-            
-            afterEvaluate {
-                from(components["release"])
-            }
-        }
-    }
-    
     repositories {
         maven {
             name = "AzureArtifacts"
-            url = uri("https://pkgs.dev.azure.com/NikithaGullapalli/_packaging/CarvanaSDK/maven/v1")
-            credentials {
-                username = project.findProperty("azure.username") as String? ?: System.getenv("AZURE_ARTIFACTS_USER")
-                password = project.findProperty("azure.password") as String? ?: System.getenv("AZURE_ARTIFACTS_PAT")
-            }
+            url = uri("https://pkgs.dev.azure.com/NikithaGullapalli/_packaging/CarvanaDocumentScannerSDK/maven/v1")
+            // No credentials needed - feed is visible to everyone in the organization
         }
     }
 }

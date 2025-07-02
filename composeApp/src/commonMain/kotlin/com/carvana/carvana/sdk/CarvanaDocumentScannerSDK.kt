@@ -151,7 +151,7 @@ data class DocumentMetadata(
     val fileName: String,
     val fileSize: Long,
     val mimeType: String,
-    val createdAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = 0L, // Will be set by platform-specific implementations
     val source: DocumentSource,
     val processingTime: Long? = null,
     val additionalInfo: Map<String, String> = emptyMap()

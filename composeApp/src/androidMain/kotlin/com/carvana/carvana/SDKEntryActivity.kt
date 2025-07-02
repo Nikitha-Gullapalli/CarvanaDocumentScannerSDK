@@ -112,6 +112,9 @@ class SDKEntryActivity : ComponentActivity() {
         documentScanner = DocumentScanner(documentScannerLauncher, this)
         documentUploader = DocumentUploader(documentUploaderLauncher, this)
         
+        // REMOVE FOR PROD: For testing, don't finish() the activity
+        val isTestMode = true // Set to false for production
+        
         // Set up callbacks to return results to the calling app
         SDKCallbackManager.setCallbacks(
             SDKCallbackManager.SDKCallbacks(
@@ -122,7 +125,13 @@ class SDKEntryActivity : ComponentActivity() {
                         putExtra(EXTRA_DOCUMENT_TYPE, if (documentPath.endsWith(".pdf")) "scanned" else "uploaded")
                     }
                     setResult(RESULT_OK, resultIntent)
-                    finish()
+                    if (!isTestMode) {
+                        finish()
+                    }
+                    // REMOVE FOR PROD: In test mode, show a success message instead
+                    if (isTestMode) {
+                        android.widget.Toast.makeText(this, "Document saved: $documentPath", android.widget.Toast.LENGTH_LONG).show()
+                    }
                 },
                 onFailure = { errorMessage ->
                     // Return error result to calling app
@@ -130,11 +139,18 @@ class SDKEntryActivity : ComponentActivity() {
                         putExtra(EXTRA_ERROR_MESSAGE, errorMessage)
                     }
                     setResult(RESULT_CANCELED, resultIntent)
-                    finish()
+                    if (!isTestMode) {
+                        finish()
+                    }
+                    // REMOVE FOR PROD: In test mode, show an error message instead
+                    if (isTestMode) {
+                        android.widget.Toast.makeText(this, "Error: $errorMessage", android.widget.Toast.LENGTH_LONG).show()
+                    }
                 },
                 onExit = {
                     // User cancelled - return empty result
                     setResult(RESULT_CANCELED)
+                    // Always finish on exit
                     finish()
                 }
             )
