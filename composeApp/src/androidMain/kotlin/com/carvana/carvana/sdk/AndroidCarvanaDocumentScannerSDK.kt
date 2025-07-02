@@ -19,7 +19,7 @@ import java.util.UUID
  * Android implementation of CarvanaDocumentScannerSDK
  */
 class AndroidCarvanaDocumentScannerSDK(
-    private val context: Context,
+    context: Context,
     private var documentScanner: DocumentScanner? = null,
     private var documentUploader: DocumentUploader? = null
 ) : CarvanaDocumentScannerSDK {

@@ -14,7 +14,9 @@ import platform.UIKit.UIApplication
 import platform.UIKit.UIApplicationDidEnterBackgroundNotification
 import platform.UIKit.UIApplicationWillTerminateNotification
 import platform.darwin.NSObject
+import platform.darwin.NSObjectProtocol
 import kotlin.native.ref.WeakReference
+import kotlin.experimental.ExperimentalNativeApi
 
 /**
  * iOS implementation of lifecycle manager
@@ -24,7 +26,7 @@ class IosSDKLifecycleManager(
     private val viewController: Any? = null
 ) : BaseSDKLifecycleManager(sdk) {
     
-    private val notificationObservers = mutableListOf<NSObject>()
+    private val notificationObservers = mutableListOf<NSObjectProtocol>()
     
     init {
         setupNotificationObservers()
@@ -79,6 +81,7 @@ class IosSDKLifecycleManager(
 /**
  * iOS callback wrapper using Kotlin/Native WeakReference
  */
+@OptIn(ExperimentalNativeApi::class)
 class IosCallbackWrapper<T>(callback: (T) -> Unit) : CallbackWrapper<T> {
     private var weakCallback: WeakReference<(T) -> Unit>? = WeakReference(callback)
     

@@ -26,29 +26,29 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
 import com.carvana.carvana.upload.AndroidDocumentUploadHandler
 import com.carvana.carvana.sdk.CarvanaDocumentScannerSDKFactory
-import com.carvana.carvana.sdk.CarvanaDocumentScannerSDK
 import com.carvana.carvana.sdk.SDKConfiguration
 
 /**
  * Entry point Activity for the Carvana Document Scanner SDK
  * External apps should launch this activity to use the SDK
- * 
+ *
  * Example usage from external app:
  * ```
  * val intent = Intent(this, SDKEntryActivity::class.java)
  * startActivityForResult(intent, REQUEST_CODE)
  * ```
  */
-class SDKEntryActivity : ComponentActivity() {
-    
+class StartCarvanaDocumentScannerSDKActivity : ComponentActivity() {
+
     companion object {
         // Result codes and extras for external apps
         const val EXTRA_DOCUMENT_PATH = "DOCUMENT_PATH"
-        const val EXTRA_EXTRACTED_TEXT = "EXTRACTED_TEXT"
         const val EXTRA_ERROR_MESSAGE = "ERROR_MESSAGE"
-        const val EXTRA_DOCUMENT_TYPE = "DOCUMENT_TYPE" // "scanned" or "uploaded"
+
+        // "scanned" or "uploaded"
+        const val EXTRA_DOCUMENT_TYPE = "DOCUMENT_TYPE"
     }
-    
+
     private lateinit var documentScanner: DocumentScanner
     private lateinit var documentUploader: DocumentUploader
     private lateinit var documentScannerLauncher: ActivityResultLauncher<Intent>
@@ -58,12 +58,11 @@ class SDKEntryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        
-        // Initialize SDK
-        CarvanaDocumentScannerSDKFactory.initialize(this)
-        val sdk = CarvanaDocumentScannerSDKFactory.create()
+
+        // Initialize SDK - no memory leak, pass context directly
+        val sdk = CarvanaDocumentScannerSDKFactory.createWithContext(this)
         sdk.initialize(SDKConfiguration())
-        
+
         // Register for activity result
         documentScannerLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -76,20 +75,18 @@ class SDKEntryActivity : ComponentActivity() {
                     val recognizedText = resultData.getStringExtra(RECOGNIZED_TEXT).orEmpty()
                     val pdfPath = resultData.getStringExtra(PDF_PATH).orEmpty()
                     DocumentScanner.handleScanResult(ScanResult.Success(recognizedText, pdfPath))
-                }
-                else if (result.resultCode == RESULT_OK && scanFailure == DocumentScanner.REQUEST_SCAN_FAILURE) {
+                } else if (result.resultCode == RESULT_OK && scanFailure == DocumentScanner.REQUEST_SCAN_FAILURE) {
                     val errorMessage = resultData.getStringExtra(ERROR_MESSAGE) ?: SCAN_FAILED
                     DocumentScanner.handleScanResult(ScanResult.Failure(errorMessage))
-                }
-                else if (result.resultCode == RESULT_CANCELED) {
+                } else if (result.resultCode == RESULT_CANCELED) {
                     DocumentScanner.handleScanResult(ScanResult.Failure(SCAN_CANCELED))
                 }
             }
         }
-        
+
         // Initialize upload handler
         uploadHandler = AndroidDocumentUploadHandler(this)
-        
+
         // Register for document upload result
         documentUploaderLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -108,13 +105,13 @@ class SDKEntryActivity : ComponentActivity() {
                 DocumentUploader.handleUploadResult(UploadResult.Failure(UPLOAD_CANCELED))
             }
         }
-        
+
         documentScanner = DocumentScanner(documentScannerLauncher, this)
         documentUploader = DocumentUploader(documentUploaderLauncher, this)
-        
+
         // REMOVE FOR PROD: For testing, don't finish() the activity
         val isTestMode = true // Set to false for production
-        
+
         // Set up callbacks to return results to the calling app
         SDKCallbackManager.setCallbacks(
             SDKCallbackManager.SDKCallbacks(
@@ -122,7 +119,10 @@ class SDKEntryActivity : ComponentActivity() {
                     // Return success result to calling app
                     val resultIntent = Intent().apply {
                         putExtra(EXTRA_DOCUMENT_PATH, documentPath)
-                        putExtra(EXTRA_DOCUMENT_TYPE, if (documentPath.endsWith(".pdf")) "scanned" else "uploaded")
+                        putExtra(
+                            EXTRA_DOCUMENT_TYPE,
+                            if (documentPath.endsWith(".pdf")) "scanned" else "uploaded"
+                        )
                     }
                     setResult(RESULT_OK, resultIntent)
                     if (!isTestMode) {
@@ -130,7 +130,11 @@ class SDKEntryActivity : ComponentActivity() {
                     }
                     // REMOVE FOR PROD: In test mode, show a success message instead
                     if (isTestMode) {
-                        android.widget.Toast.makeText(this, "Document saved: $documentPath", android.widget.Toast.LENGTH_LONG).show()
+                        android.widget.Toast.makeText(
+                            this,
+                            "Document saved: $documentPath",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
                     }
                 },
                 onFailure = { errorMessage ->
@@ -144,7 +148,11 @@ class SDKEntryActivity : ComponentActivity() {
                     }
                     // REMOVE FOR PROD: In test mode, show an error message instead
                     if (isTestMode) {
-                        android.widget.Toast.makeText(this, "Error: $errorMessage", android.widget.Toast.LENGTH_LONG).show()
+                        android.widget.Toast.makeText(
+                            this,
+                            "Error: $errorMessage",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
                     }
                 },
                 onExit = {
@@ -157,10 +165,11 @@ class SDKEntryActivity : ComponentActivity() {
         )
 
         setContent {
-            App(onExit = { 
-                // This will trigger the onExit callback above
-                SDKCallbackManager.handleExit()
-            },
+            App(
+                onExit = {
+                    // This will trigger the onExit callback above
+                    SDKCallbackManager.handleExit()
+                },
                 documentScanner = documentScanner,
                 documentUploader = documentUploader
             )
@@ -171,7 +180,8 @@ class SDKEntryActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App(onExit = {},
+    App(
+        onExit = {},
         documentScanner = DocumentScanner(),
         documentUploader = DocumentUploader()
     )

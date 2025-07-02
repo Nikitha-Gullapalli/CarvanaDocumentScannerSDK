@@ -5,6 +5,7 @@ package com.carvana.carvana.sdk
  */
 actual object CarvanaDocumentScannerSDKFactory {
     actual fun create(): CarvanaDocumentScannerSDK {
+        // Create SDK without scanner/uploader - they'll be set later
         return IosCarvanaDocumentScannerSDK()
     }
 }
