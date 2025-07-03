@@ -12,16 +12,18 @@ actual class DocumentUploader(
 
     actual fun uploadDocument(onResult: (UploadResult) -> Unit) {
         currentCallback = onResult
-        
+
         if (activityResultLauncher != null && context != null) {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "*/*"
                 addCategory(Intent.CATEGORY_OPENABLE)
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
-                    "image/*",
-                    "application/pdf",
-                    "text/*"
-                ))
+                putExtra(
+                    Intent.EXTRA_MIME_TYPES, arrayOf(
+                        "image/*",
+                        "application/pdf",
+                        "text/*"
+                    )
+                )
             }
             activityResultLauncher.launch(Intent.createChooser(intent, "Select Document"))
         } else {

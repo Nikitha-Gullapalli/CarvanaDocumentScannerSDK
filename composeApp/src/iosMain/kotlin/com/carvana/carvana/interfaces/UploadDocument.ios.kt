@@ -28,7 +28,7 @@ actual class DocumentUploader {
         try {
             // Get the proper view controller for presentation
             val rootVC = ViewControllerHelper.getPresentingViewController()
-            
+
             if (rootVC == null) {
                 onResult(UploadResult.Failure("Unable to present picker: No root view controller found"))
                 return
@@ -43,21 +43,30 @@ actual class DocumentUploader {
 
             // Add Photos option
             alertController.addAction(
-                UIAlertAction.actionWithTitle("Photos", style = 0) { _ -> // UIAlertActionStyleDefault
+                UIAlertAction.actionWithTitle(
+                    "Photos",
+                    style = 0
+                ) { _ -> // UIAlertActionStyleDefault
                     showPhotoPicker(rootVC)
                 }
             )
 
             // Add Files option
             alertController.addAction(
-                UIAlertAction.actionWithTitle("Files", style = 0) { _ -> // UIAlertActionStyleDefault
+                UIAlertAction.actionWithTitle(
+                    "Files",
+                    style = 0
+                ) { _ -> // UIAlertActionStyleDefault
                     showDocumentPicker(rootVC)
                 }
             )
 
             // Add Cancel option
             alertController.addAction(
-                UIAlertAction.actionWithTitle("Cancel", style = 1) { _ -> // UIAlertActionStyleCancel
+                UIAlertAction.actionWithTitle(
+                    "Cancel",
+                    style = 1
+                ) { _ -> // UIAlertActionStyleCancel
                     handleUploadResult(UploadResult.Failure("Upload cancelled"))
                 }
             )
@@ -72,13 +81,14 @@ actual class DocumentUploader {
 
     private fun showPhotoPicker(rootVC: UIViewController) {
         val imagePicker = UIImagePickerController()
-        imagePicker.sourceType = UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
+        imagePicker.sourceType =
+            UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary
         imagePicker.allowsEditing = false
-        
+
         val delegate = PhotoPickerDelegate()
         imagePicker.setDelegate(delegate)
         photoPickerDelegate = delegate // Keep strong reference
-        
+
         rootVC.presentViewController(imagePicker, animated = true, completion = null)
     }
 
@@ -107,7 +117,10 @@ actual class DocumentUploader {
     @OptIn(ExperimentalForeignApi::class)
     private class DocumentPickerDelegate : NSObject(), UIDocumentPickerDelegateProtocol {
 
-        override fun documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL: NSURL) {
+        override fun documentPicker(
+            controller: UIDocumentPickerViewController,
+            didPickDocumentAtURL: NSURL
+        ) {
             processSelectedDocument(didPickDocumentAtURL)
             controller.dismissViewControllerAnimated(true, null)
         }
@@ -127,22 +140,29 @@ actual class DocumentUploader {
                         "txt" -> {
                             try {
                                 @OptIn(BetaInteropApi::class)
-                                val content = NSString.create(contentsOfURL = url, encoding = NSUTF8StringEncoding, error = null)
+                                val content = NSString.create(
+                                    contentsOfURL = url,
+                                    encoding = NSUTF8StringEncoding,
+                                    error = null
+                                )
                                 "Text Document: $fileName\nContent: ${content ?: "Could not read file content"}"
                             } catch (e: Exception) {
                                 "Text Document: $fileName - Error reading file: ${e.message}"
                             }
                         }
+
                         "pdf" -> {
                             val data = NSData.dataWithContentsOfURL(url)
                             val fileSize = data?.length ?: 0u
                             "PDF Document: $fileName (${fileSize} bytes) - PDF content extraction can be added here"
                         }
+
                         "jpg", "jpeg", "png", "gif", "heic" -> {
                             val data = NSData.dataWithContentsOfURL(url)
                             val fileSize = data?.length ?: 0u
                             "Image Document: $fileName (${fileSize} bytes) - OCR text extraction can be added here"
                         }
+
                         else -> {
                             val data = NSData.dataWithContentsOfURL(url)
                             val fileSize = data?.length ?: 0u
@@ -162,12 +182,17 @@ actual class DocumentUploader {
     }
 
     @OptIn(ExperimentalForeignApi::class)
-    private class PhotoPickerDelegate : NSObject(), UIImagePickerControllerDelegateProtocol, UINavigationControllerDelegateProtocol {
-        
-        override fun imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo: Map<Any?, *>) {
+    private class PhotoPickerDelegate : NSObject(), UIImagePickerControllerDelegateProtocol,
+        UINavigationControllerDelegateProtocol {
+
+        override fun imagePickerController(
+            picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo: Map<Any?, *>
+        ) {
             picker.dismissViewControllerAnimated(true, null)
-            
-            val image = didFinishPickingMediaWithInfo[UIImagePickerControllerOriginalImage] as? UIImage
+
+            val image =
+                didFinishPickingMediaWithInfo[UIImagePickerControllerOriginalImage] as? UIImage
             if (image != null) {
                 // Convert UIImage to data and save temporarily
                 val imageData = UIImageJPEGRepresentation(image, 0.8)
@@ -175,11 +200,13 @@ actual class DocumentUploader {
                     val fileName = "picked_image_${Clock.System.now().toEpochMilliseconds()}.jpg"
                     val tempDir = NSTemporaryDirectory()
                     val filePath = "$tempDir$fileName"
-                    
+
                     if (imageData.writeToFile(filePath, atomically = true)) {
-                        handleUploadResult(UploadResult.Success(
-                            "Image uploaded: $fileName\nPath: $filePath\nSize: ${imageData.length} bytes"
-                        ))
+                        handleUploadResult(
+                            UploadResult.Success(
+                                "Image uploaded: $fileName\nPath: $filePath\nSize: ${imageData.length} bytes"
+                            )
+                        )
                     } else {
                         handleUploadResult(UploadResult.Failure("Failed to save image"))
                     }
@@ -190,7 +217,7 @@ actual class DocumentUploader {
                 handleUploadResult(UploadResult.Failure("No image selected"))
             }
         }
-        
+
         override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
             picker.dismissViewControllerAnimated(true, null)
             handleUploadResult(UploadResult.Failure("Photo selection cancelled"))

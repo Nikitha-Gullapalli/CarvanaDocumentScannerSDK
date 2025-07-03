@@ -1,4 +1,4 @@
-package com.carvana.carvana
+package com.carvana.carvana.interfaces
 
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight

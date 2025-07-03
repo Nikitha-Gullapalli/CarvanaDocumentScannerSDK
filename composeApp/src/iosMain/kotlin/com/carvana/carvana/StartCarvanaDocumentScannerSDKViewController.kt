@@ -10,17 +10,17 @@ fun StartCarvanaDocumentScannerSDKViewController() = ComposeUIViewController {
     // Create document scanner and uploader instances
     val documentScanner = DocumentScanner()
     val documentUploader = DocumentUploader()
-    
+
     // Initialize SDK - iOS doesn't need special initialization like Android
     val sdk = CarvanaDocumentScannerSDKFactory.create()
     sdk.initialize(SDKConfiguration())
-    
+
     // If SDK is IosCarvanaDocumentScannerSDK, set the instances
     if (sdk is com.carvana.carvana.sdk.IosCarvanaDocumentScannerSDK) {
         sdk.setDocumentScanner(documentScanner)
         sdk.setDocumentUploader(documentUploader)
     }
-    
+
     App(
         documentScanner = documentScanner,
         documentUploader = documentUploader,

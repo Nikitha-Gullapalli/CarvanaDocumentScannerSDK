@@ -63,7 +63,7 @@ fun App(
         ) {
             CardScanScreen(
                 showContent,
-                onCloseClick = { 
+                onCloseClick = {
                     SDKCallbackManager.handleExit()
                 },
                 onTakePhotoClick = { scanDocument(documentScanner) },

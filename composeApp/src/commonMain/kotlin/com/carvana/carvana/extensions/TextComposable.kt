@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.carvana.composeapp.generated.resources.Res
 import com.carvana.composeapp.generated.resources.ic_bullet
-import com.carvana.carvana.getCarvanaBrandonBoldFont
-import com.carvana.carvana.getCarvanaBrandonRegularFont
+import com.carvana.carvana.interfaces.getCarvanaBrandonBoldFont
+import com.carvana.carvana.interfaces.getCarvanaBrandonRegularFont
 import com.carvana.carvana.resources.DarkNavyBlue
 import com.carvana.carvana.resources.StormGray
 
