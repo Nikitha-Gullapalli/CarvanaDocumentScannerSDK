@@ -10,5 +10,6 @@ sealed class UploadResult {
         val recognizedText: String,
         val metadata: Map<String, String> = emptyMap()
     ) : UploadResult()
+
     data class Failure(val message: String) : UploadResult()
 }

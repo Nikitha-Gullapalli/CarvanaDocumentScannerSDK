@@ -1,5 +1,30 @@
 package com.carvana.carvana.interfaces
 
+import com.carvana.carvana.FileExtension
+import com.carvana.carvana.IOSDocumentType
+import com.carvana.carvana.FileExtension.GIF
+import com.carvana.carvana.FileExtension.HEIC
+import com.carvana.carvana.FileExtension.JPG
+import com.carvana.carvana.FileExtension.JPEG
+import com.carvana.carvana.FileExtension.PNG
+import com.carvana.carvana.FileExtension.PDF
+import com.carvana.carvana.FileExtension.TXT
+import com.carvana.carvana.resources.Strings.CANCEL
+import com.carvana.carvana.resources.Strings.CHOSE_WHERE_TO_UPLOAD_FROM
+import com.carvana.carvana.resources.Strings.ERROR_PROCESSING_FILE
+import com.carvana.carvana.resources.Strings.FAILED_TO_CONVERT_IMAGE_TO_DATA
+import com.carvana.carvana.resources.Strings.FAILED_TO_SAVE_IMAGE
+import com.carvana.carvana.resources.Strings.FILES
+import com.carvana.carvana.resources.Strings.NO_ACCESS_TO_FILE
+import com.carvana.carvana.resources.Strings.NO_IMAGE_SELECTED
+import com.carvana.carvana.resources.Strings.NO_ROOT_VIEW_FOUND
+import com.carvana.carvana.resources.Strings.PHOTOS_LIBRARY
+import com.carvana.carvana.resources.Strings.PHOTO_SELECTION_CANCELED
+import com.carvana.carvana.resources.Strings.PICKED_IMAGE
+import com.carvana.carvana.resources.Strings.SELECT_SOURCE
+import com.carvana.carvana.resources.Strings.UNCHECKED_CAST
+import com.carvana.carvana.resources.Strings.UNKNOWN_FILE
+import com.carvana.carvana.resources.Strings.UPLOAD_CANCELED
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.BetaInteropApi
 import platform.Foundation.*
@@ -30,23 +55,25 @@ actual class DocumentUploader {
             val rootVC = ViewControllerHelper.getPresentingViewController()
 
             if (rootVC == null) {
-                onResult(UploadResult.Failure("Unable to present picker: No root view controller found"))
+                onResult(UploadResult.Failure(NO_ROOT_VIEW_FOUND))
                 return
             }
 
             // Create action sheet to let user choose between Photos and Files
             val alertController = UIAlertController.alertControllerWithTitle(
-                title = "Select Source",
-                message = "Choose where to upload from",
-                preferredStyle = 0 // UIAlertControllerStyleActionSheet
+                title = SELECT_SOURCE,
+                message = CHOSE_WHERE_TO_UPLOAD_FROM,
+                // UIAlertControllerStyleActionSheet
+                preferredStyle = 0
             )
 
             // Add Photos option
             alertController.addAction(
                 UIAlertAction.actionWithTitle(
-                    "Photos",
+                    PHOTOS_LIBRARY,
                     style = 0
-                ) { _ -> // UIAlertActionStyleDefault
+                ) { _ ->
+                    // UIAlertActionStyleDefault
                     showPhotoPicker(rootVC)
                 }
             )
@@ -54,9 +81,10 @@ actual class DocumentUploader {
             // Add Files option
             alertController.addAction(
                 UIAlertAction.actionWithTitle(
-                    "Files",
+                    FILES,
                     style = 0
-                ) { _ -> // UIAlertActionStyleDefault
+                ) { _ ->
+                    // UIAlertActionStyleDefault
                     showDocumentPicker(rootVC)
                 }
             )
@@ -64,10 +92,11 @@ actual class DocumentUploader {
             // Add Cancel option
             alertController.addAction(
                 UIAlertAction.actionWithTitle(
-                    "Cancel",
+                    CANCEL,
                     style = 1
-                ) { _ -> // UIAlertActionStyleCancel
-                    handleUploadResult(UploadResult.Failure("Upload cancelled"))
+                ) { _ ->
+                    // UIAlertActionStyleCancel
+                    handleUploadResult(UploadResult.Failure(UPLOAD_CANCELED))
                 }
             )
 
@@ -75,7 +104,7 @@ actual class DocumentUploader {
             rootVC.presentViewController(alertController, animated = true, completion = null)
 
         } catch (e: Exception) {
-            onResult(UploadResult.Failure("Failed to show upload options: ${e.message}"))
+            onResult(UploadResult.Failure("FAILED_TO_SHOW_UPLOAD_OPTIONS ${e.message}"))
         }
     }
 
@@ -87,21 +116,17 @@ actual class DocumentUploader {
 
         val delegate = PhotoPickerDelegate()
         imagePicker.setDelegate(delegate)
-        photoPickerDelegate = delegate // Keep strong reference
+        photoPickerDelegate = delegate
 
         rootVC.presentViewController(imagePicker, animated = true, completion = null)
     }
 
+
     private fun showDocumentPicker(rootVC: UIViewController) {
-        val documentTypes = listOf(
-            "public.image",
-            "com.adobe.pdf",
-            "public.text",
-            "public.data"
-        )
+        val documentTypes = IOSDocumentType.getAllTypes()
 
         // Create document picker with proper initialization
-        @Suppress("UNCHECKED_CAST")
+        @Suppress(UNCHECKED_CAST)
         val documentPicker = UIDocumentPickerViewController(
             documentTypes = documentTypes as List<Any?>,
             inMode = UIDocumentPickerMode.UIDocumentPickerModeImport
@@ -126,18 +151,18 @@ actual class DocumentUploader {
         }
 
         override fun documentPickerWasCancelled(controller: UIDocumentPickerViewController) {
-            handleUploadResult(UploadResult.Failure("Upload was cancelled"))
+            handleUploadResult(UploadResult.Failure(UPLOAD_CANCELED))
             controller.dismissViewControllerAnimated(true, null)
         }
 
         private fun processSelectedDocument(url: NSURL) {
             try {
-                val fileName = url.lastPathComponent ?: "Unknown file"
-                val fileExtension = url.pathExtension?.lowercase() ?: ""
+                val fileName = url.lastPathComponent ?: UNKNOWN_FILE
+                val fileExtension = url.pathExtension?.lowercase().orEmpty()
 
                 if (url.startAccessingSecurityScopedResource()) {
-                    val recognizedText = when (fileExtension) {
-                        "txt" -> {
+                    val recognizedText = when (FileExtension.fromString(fileExtension)) {
+                        TXT -> {
                             try {
                                 @OptIn(BetaInteropApi::class)
                                 val content = NSString.create(
@@ -145,19 +170,19 @@ actual class DocumentUploader {
                                     encoding = NSUTF8StringEncoding,
                                     error = null
                                 )
-                                "Text Document: $fileName\nContent: ${content ?: "Could not read file content"}"
+                                "$TXT Document $fileName\nContent: ${content ?: "Could not read file content"}"
                             } catch (e: Exception) {
-                                "Text Document: $fileName - Error reading file: ${e.message}"
+                                "$TXT Document: $fileName - Error reading file: ${e.message}"
                             }
                         }
 
-                        "pdf" -> {
+                        PDF -> {
                             val data = NSData.dataWithContentsOfURL(url)
                             val fileSize = data?.length ?: 0u
-                            "PDF Document: $fileName (${fileSize} bytes) - PDF content extraction can be added here"
+                            "$PDF Document: $fileName (${fileSize} bytes) - PDF content extraction can be added here"
                         }
 
-                        "jpg", "jpeg", "png", "gif", "heic" -> {
+                        JPG, JPEG, PNG, GIF, HEIC -> {
                             val data = NSData.dataWithContentsOfURL(url)
                             val fileSize = data?.length ?: 0u
                             "Image Document: $fileName (${fileSize} bytes) - OCR text extraction can be added here"
@@ -173,10 +198,10 @@ actual class DocumentUploader {
                     url.stopAccessingSecurityScopedResource()
                     handleUploadResult(UploadResult.Success(recognizedText))
                 } else {
-                    handleUploadResult(UploadResult.Failure("Could not access selected file"))
+                    handleUploadResult(UploadResult.Failure(NO_ACCESS_TO_FILE))
                 }
             } catch (e: Exception) {
-                handleUploadResult(UploadResult.Failure("Error processing file: ${e.message}"))
+                handleUploadResult(UploadResult.Failure("$ERROR_PROCESSING_FILE ${e.message}"))
             }
         }
     }
@@ -197,7 +222,8 @@ actual class DocumentUploader {
                 // Convert UIImage to data and save temporarily
                 val imageData = UIImageJPEGRepresentation(image, 0.8)
                 if (imageData != null) {
-                    val fileName = "picked_image_${Clock.System.now().toEpochMilliseconds()}.jpg"
+                    val fileName =
+                        "$PICKED_IMAGE${Clock.System.now().toEpochMilliseconds()}.${JPG.value}"
                     val tempDir = NSTemporaryDirectory()
                     val filePath = "$tempDir$fileName"
 
@@ -208,19 +234,23 @@ actual class DocumentUploader {
                             )
                         )
                     } else {
-                        handleUploadResult(UploadResult.Failure("Failed to save image"))
+                        handleUploadResult(FAILED_TO_SAVE_IMAGE)
                     }
                 } else {
-                    handleUploadResult(UploadResult.Failure("Failed to convert image to data"))
+                    handleUploadResult(FAILED_TO_CONVERT_IMAGE_TO_DATA)
                 }
             } else {
-                handleUploadResult(UploadResult.Failure("No image selected"))
+                handleUploadResult(NO_IMAGE_SELECTED)
             }
+        }
+
+        fun handleUploadResult(message: String) {
+            handleUploadResult(UploadResult.Failure(message))
         }
 
         override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
             picker.dismissViewControllerAnimated(true, null)
-            handleUploadResult(UploadResult.Failure("Photo selection cancelled"))
+            handleUploadResult(UploadResult.Failure(PHOTO_SELECTION_CANCELED))
         }
     }
 }

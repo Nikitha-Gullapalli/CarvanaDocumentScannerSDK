@@ -12,7 +12,7 @@ interface DocumentUploadHandler {
      * @return UploadResult with success or failure information
      */
     suspend fun processUploadedDocument(fileData: Any): UploadResult
-    
+
     /**
      * Validate file before processing
      * @param fileName Name of the file
@@ -21,7 +21,7 @@ interface DocumentUploadHandler {
      * @return Error message if validation fails, null if valid
      */
     fun validateFile(fileName: String, fileSize: Long, mimeType: String): String?
-    
+
     /**
      * Clean up old cached files
      * @param daysToKeep Number of days to keep files
@@ -43,28 +43,33 @@ data class FileInfo(
  */
 object FileValidator {
     private const val MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
-    
+
     private val SUPPORTED_MIME_TYPES = listOf(
         "image/jpeg",
-        "image/png", 
+        "image/png",
         "image/jpg",
         "application/pdf",
         "text/plain",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
-    
+
+    /**
+     * Validate file information
+     * @param fileInfo File information to validate
+     * @return Error message if validation fails, null if valid
+     */
     fun validate(fileInfo: FileInfo): String? {
         // Check file size
         if (fileInfo.fileSize > MAX_FILE_SIZE) {
             return "File size exceeds maximum allowed size of ${MAX_FILE_SIZE / 1024 / 1024} MB"
         }
-        
+
         // Check MIME type
         if (fileInfo.mimeType !in SUPPORTED_MIME_TYPES) {
             return "File type '${fileInfo.mimeType}' is not supported"
         }
-        
+
         return null
     }
 }
@@ -85,15 +90,15 @@ object UploadResultProcessor {
             "fileType" to fileType,
             "fileSize" to fileSize.toString()
         )
-        
+
         content?.let { metadata["content"] = it }
-        
+
         return UploadResult.Success(
             recognizedText = "File uploaded successfully: $fileName",
             metadata = metadata
         )
     }
-    
+
     fun createErrorResult(message: String): UploadResult {
         return UploadResult.Failure(message)
     }

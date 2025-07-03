@@ -24,7 +24,6 @@ import com.carvana.composeapp.generated.resources.Res
 import com.carvana.composeapp.generated.resources.ic_close_blue_accent
 import com.carvana.composeapp.generated.resources.ic_ico_docupload
 import com.carvana.carvana.interfaces.SDKCallbackManager
-import com.carvana.carvana.extensions.scanDocument
 import com.carvana.carvana.extensions.SetIconButton
 import com.carvana.carvana.extensions.setBulletsText
 import com.carvana.carvana.extensions.setButton
@@ -35,12 +34,15 @@ import com.carvana.carvana.extensions.setTextAppearanceHeadline6
 import com.carvana.carvana.extensions.setTextButton
 import com.carvana.carvana.interfaces.DocumentScanner
 import com.carvana.carvana.interfaces.DocumentUploader
+import com.carvana.carvana.interfaces.ScanResult
+import com.carvana.carvana.interfaces.UploadResult
 import com.carvana.carvana.interfaces.logger
 import com.carvana.carvana.resources.Primary
-import com.carvana.carvana.extensions.uploadDocument
 import com.carvana.carvana.resources.Strings
+import com.carvana.carvana.resources.Strings.ON_CLOSE_CLICK
 import com.carvana.carvana.resources.Strings.PLEASE_SCAN
 import com.carvana.carvana.resources.Strings.SCAN_DOCUMENTS
+import com.carvana.carvana.resources.Strings.SETTING_SHOW_CONTENT_TRUE
 import com.carvana.carvana.resources.Strings.TAG
 import com.carvana.carvana.resources.Strings.TAKE_A_PHOTO
 import com.carvana.carvana.resources.Strings.TIPS_GOOD_PHOTO
@@ -66,14 +68,18 @@ fun App(
                 onCloseClick = {
                     SDKCallbackManager.handleExit()
                 },
-                onTakePhotoClick = { scanDocument(documentScanner) },
-                onUploadClick = { uploadDocument(documentUploader) },
+                onTakePhotoClick = {
+                    scanDocument(documentScanner)
+                },
+                onUploadClick = {
+                    uploadDocument(documentUploader)
+                },
                 onCloseScreen = {
                     if (onExit != null) {
-                        logger.d(TAG, "onCloseScreen: $onExit")
+                        logger.d(TAG, "$ON_CLOSE_CLICK $onExit")
                         onExit()
                     } else {
-                        logger.d(TAG, "onCloseScreen: $onExit so setting showContent to true")
+                        logger.d(TAG, "$ON_CLOSE_CLICK $onExit $SETTING_SHOW_CONTENT_TRUE")
                         showContent = true
                     }
                 }
@@ -81,7 +87,6 @@ fun App(
         }
     }
 }
-
 
 @Composable
 fun CardScanScreen(
@@ -177,5 +182,38 @@ private fun ActionButtonsSection(
     ) {
         setButton(text = TAKE_A_PHOTO, onClick = onTakePhotoClick)
         setTextButton(text = UPLOAD_FROM_LIBRARY, onClick = onUploadClick)
+    }
+}
+
+
+fun uploadDocument(documentUploader: DocumentUploader) {
+    documentUploader.uploadDocument { result ->
+        when (result) {
+            is UploadResult.Success -> {
+                logger.d("uploadDocument", "Text recognized: ${result.recognizedText}")
+                SDKCallbackManager.handleSuccess(result.recognizedText)
+            }
+
+            is UploadResult.Failure -> {
+                logger.e("uploadDocument", "Failed: ${result.message}")
+                SDKCallbackManager.handleFailure(result.message)
+            }
+        }
+    }
+}
+
+fun scanDocument(documentScanner: DocumentScanner) {
+    documentScanner.scanDocument { result ->
+        when (result) {
+            is ScanResult.Success -> {
+                logger.d("scanDocument", "Text: ${result.recognizedText}, PDF: ${result.pdfPath}")
+                SDKCallbackManager.handleSuccess(result.pdfPath)
+            }
+
+            is ScanResult.Failure -> {
+                logger.e("scanDocument", "Failed: ${result.message}")
+                SDKCallbackManager.handleFailure(result.message)
+            }
+        }
     }
 }
