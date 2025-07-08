@@ -16,6 +16,7 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        publishLibraryVariants("release", "debug")
     }
 
     listOf(
@@ -97,7 +98,7 @@ dependencies {
 
 // Publishing configuration for Azure Artifacts
 group = "com.carvana"
-version = "1.0.1"
+version = "1.0.2"
 
 publishing {
     repositories {
