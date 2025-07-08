@@ -110,7 +110,7 @@ class StartCarvanaDocumentScannerSDKActivity : ComponentActivity() {
         documentUploader = DocumentUploader(documentUploaderLauncher, this)
 
         // REMOVE FOR PROD: For testing, don't finish() the activity
-        val isTestMode = true // Set to false for production
+        val isTestMode = false // Set to false for production
 
         // Set up callbacks to return results to the calling app
         SDKCallbackManager.setCallbacks(
