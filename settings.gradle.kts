@@ -30,6 +30,5 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+include(":document-scanner-sdk")
 include(":openCVLibrary")
-//project(":openCVLibrary").projectDir = File("relative/path/to/OpenCV-android-sdk/sdk/java")

@@ -20,9 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.carvana.composeapp.generated.resources.Res
-import com.carvana.composeapp.generated.resources.ic_close_blue_accent
-import com.carvana.composeapp.generated.resources.ic_ico_docupload
+import com.carvana.document_scanner_sdk.generated.resources.Res
+import com.carvana.document_scanner_sdk.generated.resources.ic_close_blue_accent
+import com.carvana.document_scanner_sdk.generated.resources.ic_ico_docupload
 import com.carvana.carvana.interfaces.SDKCallbackManager
 import com.carvana.carvana.extensions.SetIconButton
 import com.carvana.carvana.extensions.setBulletsText

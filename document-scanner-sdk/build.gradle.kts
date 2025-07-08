@@ -5,7 +5,7 @@ plugins {
     // REMOVE FOR PROD: Change androidApplication to androidLibrary
     // For testing: libs.plugins.androidApplication
     // For production: libs.plugins.androidLibrary
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     `maven-publish`
@@ -66,9 +66,9 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         // REMOVE FOR PROD: Remove the following 3 lines (applicationId, versionCode, versionName)
-//        applicationId = "com.carvana.carvana"
-//        versionCode = 1
-//        versionName = "1.0"
+        applicationId = "com.carvana.carvana"
+        versionCode = 1
+        versionName = "1.0"
         // REMOVE FOR PROD: End of lines to remove
     }
     packaging {
@@ -90,7 +90,7 @@ android {
 dependencies {
     implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.play.services.mlkit.text.recognition)
-    implementation("androidx.compose.animation:animation:1.5.4")
+    implementation(libs.androidx.animation)
     implementation(libs.firebase.inappmessaging)
     debugImplementation(compose.uiTooling)
 }
