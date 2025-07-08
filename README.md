@@ -2,6 +2,10 @@
 
 A cross-platform document scanning and processing SDK built with Kotlin Multiplatform for Android and iOS applications.
 
+## Publishing Complete
+You can now see your published SDK at:
+https://dev.azure.com/NikithaGullapalli/CarvanaDocumentScannerSDK/_artifacts/feed/CarvanaDocumentScannerSDK
+
 ## Features
 
 - 📷 Document scanning with camera

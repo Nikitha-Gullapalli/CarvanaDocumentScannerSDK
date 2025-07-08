@@ -103,9 +103,14 @@ publishing {
     repositories {
         maven {
             name = "AzureArtifacts"
-            url =
-                uri("https://pkgs.dev.azure.com/NikithaGullapalli/_packaging/CarvanaDocumentScannerSDK/maven/v1")
-            // No credentials needed - feed is visible to everyone in the organization
+            url = uri("https://pkgs.dev.azure.com/NikithaGullapalli/CarvanaDocumentScannerSDK/_packaging/CarvanaDocumentScannerSDK/maven/v1")
+            credentials {
+                username = ""
+                password = System.getenv("AZURE_DEVOPS_TOKEN") ?: project.findProperty("azureDevOpsToken") as String? ?: ""
+            }
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
         }
     }
 }
