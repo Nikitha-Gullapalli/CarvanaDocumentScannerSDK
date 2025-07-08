@@ -176,3 +176,39 @@ class ViewController: UIViewController {
 ---
 
 **© 2024 Carvana. All rights reserved.**
+
+## 🔄 Update and Republish Process
+To update the SDK and publish a new version, follow these steps:
+
+    1. Update Version Number
+  Edit document-scanner-sdk/build.gradle.kts:
+
+  // Change version number
+  group = "com.carvana"
+  version = "1.0.1"  // Increment version
+
+    2. Make Your Code Changes
+  - Modify SDK functionality
+  - Add new features
+  - Fix bugs
+  - Update dependencies
+
+    
+    3. Test Changes
+  # Build to ensure no errors
+  ./gradlew :document-scanner-sdk:build --no-daemon
+
+    4. Publish New Version
+  # Set token (if not already set)
+  export AZURE_DEVOPS_TOKEN="Al38hpTnuYZ9WiT5dYDMRD03So2RflYGOTEn7nvxzep6Tmrp1StuJQQJ99BGACAAAAA5X466AAASAZDO3kfr"
+
+  # Publish updated SDK
+  ./gradlew :document-scanner-sdk:publish --no-daemon
+
+    5. Update Consuming Projects
+
+  In your other projects, update the version:
+
+  dependencies {
+      implementation("com.carvana:document-scanner-sdk:1.0.1")  // New version
+  }
