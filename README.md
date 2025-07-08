@@ -200,7 +200,7 @@ To update the SDK and publish a new version, follow these steps:
 
     4. Publish New Version
   # Set token (if not already set)
-  export AZURE_DEVOPS_TOKEN="Al38hpTnuYZ9WiT5dYDMRD03So2RflYGOTEn7nvxzep6Tmrp1StuJQQJ99BGACAAAAA5X466AAASAZDO3kfr" 
+   echo "azureDevOpsToken=Al38hpTnuYZ9WiT5dYDMRD03So2RflYGOTEn7nvxzep6Tmrp1StuJQQJ99BGACAAAAA5X466AAASAZDO3kfr" >> gradle.properties
 
   # Publish updated SDK
   ./gradlew :document-scanner-sdk:publish --no-daemon
