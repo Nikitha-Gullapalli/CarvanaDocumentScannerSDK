@@ -190,8 +190,9 @@ fun uploadDocument(documentUploader: DocumentUploader) {
     documentUploader.uploadDocument { result ->
         when (result) {
             is UploadResult.Success -> {
-                logger.d("uploadDocument", "Text recognized: ${result.recognizedText}")
-                SDKCallbackManager.handleSuccess(result.recognizedText)
+                val filePath = result.metadata["filePath"] ?: result.recognizedText
+                logger.d("uploadDocument", "File uploaded: $filePath")
+                SDKCallbackManager.handleSuccess(filePath)
             }
 
             is UploadResult.Failure -> {

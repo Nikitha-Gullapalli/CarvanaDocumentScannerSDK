@@ -87,6 +87,7 @@ object UploadResultProcessor {
     ): UploadResult {
         val metadata = mutableMapOf(
             "filePath" to filePath,
+            "fileName" to fileName,
             "fileType" to fileType,
             "fileSize" to fileSize.toString()
         )

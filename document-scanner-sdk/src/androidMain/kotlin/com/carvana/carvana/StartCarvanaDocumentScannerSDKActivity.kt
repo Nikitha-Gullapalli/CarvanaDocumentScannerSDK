@@ -175,6 +175,12 @@ class StartCarvanaDocumentScannerSDKActivity : ComponentActivity() {
             )
         }
     }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clear callbacks when activity is destroyed to prevent memory leaks
+        SDKCallbackManager.clearCallbacks()
+    }
 }
 
 @Preview

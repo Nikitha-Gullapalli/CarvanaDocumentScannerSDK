@@ -8,16 +8,22 @@ object SDKCallbackManager {
     
     fun handleSuccess(recognizedText: String) {
         currentCallbacks?.onSuccess?.invoke(recognizedText)
-        currentCallbacks = null
+        // Clear callbacks after success to prevent memory leaks and ensure fresh callbacks next time
+        clearCallbacks()
     }
     
     fun handleFailure(errorMessage: String) {
         currentCallbacks?.onFailure?.invoke(errorMessage)
-        currentCallbacks = null
+        // Clear callbacks after failure to prevent memory leaks and ensure fresh callbacks next time
+        clearCallbacks()
     }
     
     fun handleExit() {
         currentCallbacks?.onExit?.invoke()
+        clearCallbacks()
+    }
+    
+    fun clearCallbacks() {
         currentCallbacks = null
     }
     
