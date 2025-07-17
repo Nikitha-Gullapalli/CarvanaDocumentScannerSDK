@@ -9,7 +9,7 @@ sealed class ScanResult {
     data class Success(
         val recognizedText: String, 
         val pdfPath: String,
-        val metadata: Map<String, String> = emptyMap(1
+        val metadata: Map<String, String> = emptyMap()
     ) : ScanResult()
     data class Failure(val message: String) : ScanResult()
 }

@@ -74,7 +74,7 @@ class StartCarvanaDocumentScannerSDKActivity : ComponentActivity() {
                 if (result.resultCode == RESULT_OK && scanSuccess == DocumentScanner.REQUEST_SCAN_SUCCESS) {
                     val recognizedText = resultData.getStringExtra(RECOGNIZED_TEXT).orEmpty()
                     val pdfPath = resultData.getStringExtra(PDF_PATH).orEmpty()
-                    DocumentScanner.handleScanResult(ScanResult.Success(recognizedText, pdfPath))
+                    DocumentScanner.handleScanResult(ScanResult.Success(recognizedText, pdfPath, emptyMap()))
                 } else if (result.resultCode == RESULT_OK && scanFailure == DocumentScanner.REQUEST_SCAN_FAILURE) {
                     val errorMessage = resultData.getStringExtra(ERROR_MESSAGE) ?: SCAN_FAILED
                     DocumentScanner.handleScanResult(ScanResult.Failure(errorMessage))
