@@ -39,8 +39,7 @@ kotlin {
         
         dependsOn(
             "linkReleaseFrameworkIosArm64",
-            "linkReleaseFrameworkIosSimulatorArm64", 
-            "linkReleaseFrameworkIosX64"
+            "linkReleaseFrameworkIosSimulatorArm64"
         )
         
         doLast {
@@ -55,7 +54,6 @@ kotlin {
                     "xcodebuild", "-create-xcframework",
                     "-framework", "$buildDir/bin/iosArm64/releaseFramework/$xcframeworkName.framework",
                     "-framework", "$buildDir/bin/iosSimulatorArm64/releaseFramework/$xcframeworkName.framework",
-                    "-framework", "$buildDir/bin/iosX64/releaseFramework/$xcframeworkName.framework",
                     "-output", xcframeworkPath.absolutePath
                 )
             }
@@ -132,7 +130,7 @@ dependencies {
 
 // Publishing configuration for GitHub Packages
 group = "com.carvana"
-version = "1.0.10"
+version = "1.0.11"
 
 publishing {
     repositories {
