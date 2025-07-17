@@ -3,14 +3,12 @@ import PackageDescription
 
 let package = Package(
     name: "CarvanaDocumentScannerSDK",
-    platforms: [
-        .iOS(.v16)
-    ],
+    platforms: [.iOS(.v16)],
     products: [
         .library(
             name: "CarvanaDocumentScannerSDK",
             targets: ["ComposeApp"]
-        ),
+        )
     ],
     targets: [
         .binaryTarget(
