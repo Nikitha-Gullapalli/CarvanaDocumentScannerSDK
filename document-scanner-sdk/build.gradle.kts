@@ -137,14 +137,11 @@ version = "1.0.8"
 publishing {
     repositories {
         maven {
-            name = "AzureArtifacts"
-            url = uri("https://pkgs.dev.azure.com/NikithaGullapalli/CarvanaDocumentScannerSDK/_packaging/CarvanaDocumentScannerSDK/maven/v1")
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-")
             credentials {
-                username = ""
-                password = System.getenv("AZURE_DEVOPS_TOKEN") ?: project.findProperty("azureDevOpsToken") as String? ?: ""
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
+                username = "Nikitha-Gullapalli"
+                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("githubToken") as String? ?: ""
             }
         }
     }
