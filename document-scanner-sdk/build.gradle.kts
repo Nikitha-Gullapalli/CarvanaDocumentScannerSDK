@@ -130,9 +130,9 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-// Publishing configuration for Azure Artifacts
+// Publishing configuration for GitHub Packages
 group = "com.carvana"
-version = "1.0.8"
+version = "1.0.9"
 
 publishing {
     repositories {
