@@ -225,4 +225,4 @@ To update the SDK and publish a new version, follow these steps:
 
   dependencies {
       implementation("com.carvana:document-scanner-sdk:1.0.7")  // New version
-  }
+  }# CarvanaDocumentScannerSDK-
