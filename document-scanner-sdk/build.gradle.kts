@@ -132,7 +132,7 @@ dependencies {
 
 // Publishing configuration for Azure Artifacts
 group = "com.carvana"
-version = "1.0.7"
+version = "1.0.8"
 
 publishing {
     repositories {
