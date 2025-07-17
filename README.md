@@ -120,7 +120,21 @@ class MainActivity : AppCompatActivity() {
 
 ## iOS Setup
 
-### 1. Add Permissions
+### 1. Add Dependency
+
+#### Option A: Swift Package Manager
+In Xcode:
+1. Go to **File → Add Package Dependencies**
+2. Enter repository URL: `https://github.com/YourOrg/CarvanaDocumentScannerSDK` 
+3. Select version **1.0.7**
+4. Add **CarvanaDocumentScannerSDK** to your target
+
+#### Option B: Manual Framework
+1. Build the framework: `./build-ios-framework.sh`
+2. Copy `ComposeApp.xcframework` to your project
+3. Add to **Frameworks, Libraries, and Embedded Content**
+
+### 2. Add Permissions
 
 Add to `Info.plist`:
 
@@ -131,11 +145,11 @@ Add to `Info.plist`:
 <string>Photo library access needed to upload documents</string>
 ```
 
-### 2. Basic Implementation
+### 3. Basic Implementation
 
 ```swift
 import UIKit
-import ComposeApp
+import CarvanaDocumentScannerSDK // or import ComposeApp if using manual framework
 
 class ViewController: UIViewController {
     

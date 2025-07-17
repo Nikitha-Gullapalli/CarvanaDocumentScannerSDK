@@ -29,6 +29,40 @@ kotlin {
             isStatic = true
         }
     }
+    
+    // XCFramework configuration for distribution
+    val xcframeworkName = "ComposeApp"
+    
+    task("buildXCFramework") {
+        group = "build"
+        description = "Build XCFramework for iOS distribution"
+        
+        dependsOn(
+            "linkReleaseFrameworkIosArm64",
+            "linkReleaseFrameworkIosSimulatorArm64", 
+            "linkReleaseFrameworkIosX64"
+        )
+        
+        doLast {
+            val buildDir = layout.buildDirectory.asFile.get()
+            val xcframeworkDir = File(buildDir, "XCFrameworks/release")
+            xcframeworkDir.mkdirs()
+            
+            val xcframeworkPath = File(xcframeworkDir, "$xcframeworkName.xcframework")
+            
+            exec {
+                commandLine(
+                    "xcodebuild", "-create-xcframework",
+                    "-framework", "$buildDir/bin/iosArm64/releaseFramework/$xcframeworkName.framework",
+                    "-framework", "$buildDir/bin/iosSimulatorArm64/releaseFramework/$xcframeworkName.framework",
+                    "-framework", "$buildDir/bin/iosX64/releaseFramework/$xcframeworkName.framework",
+                    "-output", xcframeworkPath.absolutePath
+                )
+            }
+            
+            println("✅ XCFramework created at: ${xcframeworkPath.absolutePath}")
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {
