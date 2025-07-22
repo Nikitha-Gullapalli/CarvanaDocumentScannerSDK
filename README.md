@@ -50,7 +50,7 @@ Add to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.carvana:document-scanner-sdk:1.0.12")
+    implementation("com.carvana:document-scanner-sdk-android-release:1.0.12")
     implementation("androidx.activity:activity-ktx:1.8.0")
 }
 ```
@@ -301,7 +301,7 @@ shasum -a 256 document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframe
 **Android:**
 ```kotlin
 dependencies {
-    implementation("com.carvana:document-scanner-sdk:1.0.13")  // New version
+    implementation("com.carvana:document-scanner-sdk-android-release:1.0.13")  
 }
 ```
 
@@ -313,7 +313,7 @@ Xcode will automatically detect new versions when using Swift Package Manager.
 ## Troubleshooting
 
 ### Android
-- **GitHub Packages authentication**: Ensure your GitHub token has `read:packages` scope
+- **GitHub Packages authentication**: Ensure your GitHub token has `read:packages` scope\n- **AAR metadata missing**: Use the `-android-release` variant: `implementation(\"com.carvana:document-scanner-sdk-android-release:1.0.12\")`
 - **Build errors**: Clean project with `./gradlew clean`
 - **MLKit issues**: Ensure Google Play Services are updated
 
