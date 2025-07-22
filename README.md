@@ -33,7 +33,12 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            url = uri("https://pkgs.dev.azure.com/NikithaGullapalli/_packaging/CarvanaDocumentScannerSDK/maven/v1")
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-")
+            credentials {
+                username = "your-github-username"
+                password = "your-github-token" // Personal Access Token with read:packages scope
+            }
         }
     }
 }
@@ -45,7 +50,7 @@ Add to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.carvana:document-scanner-sdk:1.0.0")
+    implementation("com.carvana:document-scanner-sdk:1.0.12")
     implementation("androidx.activity:activity-ktx:1.8.0")
 }
 ```
@@ -122,17 +127,19 @@ class MainActivity : AppCompatActivity() {
 
 ### 1. Add Dependency
 
-#### Option A: Swift Package Manager
+#### Swift Package Manager
 In Xcode:
 1. Go to **File → Add Package Dependencies**
-2. Enter repository URL: `https://github.com/YourOrg/CarvanaDocumentScannerSDK` 
-3. Select version **1.0.7**
+2. Enter repository URL: `https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-`
+3. Select version **1.0.12** or "Up to Next Major Version"
 4. Add **CarvanaDocumentScannerSDK** to your target
 
-#### Option B: Manual Framework
-1. Build the framework: `./build-ios-framework.sh`
-2. Copy `ComposeApp.xcframework` to your project
-3. Add to **Frameworks, Libraries, and Embedded Content**
+**Alternative - Package.swift:**
+```swift
+dependencies: [
+    .package(url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-", from: "1.0.12")
+]
+```
 
 ### 2. Add Permissions
 
@@ -149,7 +156,7 @@ Add to `Info.plist`:
 
 ```swift
 import UIKit
-import CarvanaDocumentScannerSDK // or import ComposeApp if using manual framework
+import CarvanaDocumentScannerSDK
 
 class ViewController: UIViewController {
     
@@ -159,6 +166,12 @@ class ViewController: UIViewController {
         
         scannerVC.modalPresentationStyle = .fullScreen
         present(scannerVC, animated: true)
+    }
+    
+    // Handle results via callback
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // SDK will handle results internally and dismiss automatically
     }
 }
 ```
@@ -191,38 +204,75 @@ class ViewController: UIViewController {
 
 **© 2024 Carvana. All rights reserved.**
 
-## 🔄 Update and Republish Process
-To update the SDK and publish a new version, follow these steps:
+---
 
-    1. Update Version Number
-  Edit document-scanner-sdk/build.gradle.kts:
+## 🔄 Publishing New Versions
 
-  // Change version number
-  group = "com.carvana"
-  version = "1.0.1"  // Increment version
+### 1. Update Version Numbers
 
-    2. Make Your Code Changes
-  - Modify SDK functionality
-  - Add new features
-  - Fix bugs
-  - Update dependencies
+**Android (document-scanner-sdk/build.gradle.kts):**
+```kotlin
+group = "com.carvana"
+version = "1.0.13"  // Increment version
+```
 
-    
-    3. Test Changes
-  # Build to ensure no errors
-  ./gradlew :document-scanner-sdk:build --no-daemon
+**iOS (Package.swift):**
+```swift
+// Will be updated automatically to point to new release
+url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases/download/v1.0.13/ComposeApp.xcframework.zip"
+```
 
-    4. Publish New Version
-  # Set token (if not already set)
-   echo "azureDevOpsToken=Al38hpTnuYZ9WiT5dYDMRD03So2RflYGOTEn7nvxzep6Tmrp1StuJQQJ99BGACAAAAA5X466AAASAZDO3kfr" >> gradle.properties
+### 2. Build and Publish
 
-  # Publish updated SDK
-    AZURE_DEVOPS_TOKEN="Al38hpTnuYZ9WiT5dYDMRD03So2RflYGOTEn7nvxzep6Tmrp1StuJQQJ99BGACAAAAA5X466AAASAZDO3kfr" ./gradlew :document-scanner-sdk:publish --no-daemon
+**Android SDK:**
+```bash
+# Ensure GitHub token is set in gradle.properties
+echo "githubToken=your_github_token" >> gradle.properties
 
-    5. Update Consuming Projects
+# Publish to GitHub Packages
+./gradlew :document-scanner-sdk:publish
+```
 
-  In your other projects, update the version:
+**iOS SDK:**
+```bash
+# Build XCFramework
+./gradlew :document-scanner-sdk:buildXCFramework
 
-  dependencies {
-      implementation("com.carvana:document-scanner-sdk:1.0.7")  // New version
-  }# CarvanaDocumentScannerSDK-
+# Create GitHub release and upload XCFramework
+# (Manual step - create release on GitHub and upload the .zip file)
+```
+
+### 3. Update Package.swift
+
+```bash
+# Get checksum of new XCFramework
+shasum -a 256 document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip
+
+# Update Package.swift with new version and checksum
+```
+
+### 4. Consumer Project Updates
+
+**Android:**
+```kotlin
+dependencies {
+    implementation("com.carvana:document-scanner-sdk:1.0.13")  // New version
+}
+```
+
+**iOS:**
+Xcode will automatically detect new versions when using Swift Package Manager.
+
+---
+
+## Troubleshooting
+
+### Android
+- **GitHub Packages authentication**: Ensure your GitHub token has `read:packages` scope
+- **Build errors**: Clean project with `./gradlew clean`
+- **MLKit issues**: Ensure Google Play Services are updated
+
+### iOS
+- **Package resolution**: Try **File → Packages → Reset Package Caches** in Xcode
+- **Framework not found**: Verify the GitHub release exists with the XCFramework attached
+- **Runtime crashes**: Check Info.plist permissions are added
