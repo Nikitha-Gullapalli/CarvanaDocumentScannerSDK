@@ -242,7 +242,52 @@ echo "githubToken=your_github_token" >> gradle.properties
 # (Manual step - create release on GitHub and upload the .zip file)
 ```
 
-### 3. Update Package.swift
+### 3. Create GitHub Release and Upload XCFramework
+
+#### Option A: Command Line (Recommended)
+
+```bash
+# Create git tag
+git tag v1.0.13
+git push origin v1.0.13
+
+# Create GitHub release
+curl -X POST \
+  -H "Authorization: token YOUR_GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  https://api.github.com/repos/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases \
+  -d '{
+    "tag_name": "v1.0.13",
+    "name": "Release v1.0.13",
+    "body": "iOS and Android SDK release v1.0.13",
+    "draft": false,
+    "prerelease": false
+  }'
+
+# Upload XCFramework to release (get release_id from previous response)
+curl -X POST \
+  -H "Authorization: token YOUR_GITHUB_TOKEN" \
+  -H "Content-Type: application/zip" \
+  --data-binary @"document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip" \
+  "https://uploads.github.com/repos/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases/RELEASE_ID/assets?name=ComposeApp.xcframework.zip"
+```
+
+#### Option B: Manual Steps
+
+1. **Create Release on GitHub:**
+   - Go to: https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases
+   - Click "Create a new release"
+   - Tag version: `v1.0.13`
+   - Release title: `Release v1.0.13`
+   - Description: `iOS and Android SDK release v1.0.13`
+   - Click "Publish release"
+
+2. **Upload XCFramework:**
+   - Edit the created release
+   - Drag and drop the file: `document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip`
+   - Click "Update release"
+
+### 4. Update Package.swift
 
 ```bash
 # Get checksum of new XCFramework
