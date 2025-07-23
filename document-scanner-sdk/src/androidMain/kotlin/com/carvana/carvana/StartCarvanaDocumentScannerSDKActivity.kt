@@ -9,6 +9,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.carvana.carvana.interfaces.DocumentScanner
 import com.carvana.carvana.interfaces.DocumentUploader
@@ -165,14 +167,16 @@ class StartCarvanaDocumentScannerSDKActivity : ComponentActivity() {
         )
 
         setContent {
-            App(
-                onExit = {
-                    // This will trigger the onExit callback above
-                    SDKCallbackManager.handleExit()
-                },
-                documentScanner = documentScanner,
-                documentUploader = documentUploader
-            )
+            CompositionLocalProvider(LocalContext provides this@StartCarvanaDocumentScannerSDKActivity) {
+                App(
+                    onExit = {
+                        // This will trigger the onExit callback above
+                        SDKCallbackManager.handleExit()
+                    },
+                    documentScanner = documentScanner,
+                    documentUploader = documentUploader
+                )
+            }
         }
     }
     
