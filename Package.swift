@@ -1,6 +1,8 @@
 // swift-tools-version: 5.9
 import PackageDescription
 
+// Updated: 2025-07-29 to fix CDN caching issue
+
 let package = Package(
     name: "CarvanaDocumentScannerSDK",
     platforms: [.iOS(.v16)],
