@@ -14,7 +14,7 @@ let package = Package(
         .binaryTarget(
             name: "ComposeApp",
             url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases/download/v1.0.15/ComposeApp.xcframework.zip",
-            checksum: "3f56e9317f760384e7674da929d3b2b71bf211ebdfcf96b00ee3c30a62b54414"
+            checksum: "4a8f54556feba9a368c1ee180f6ddcc4b4ba7620e0d2885096f6a229222c2889"
         )
     ]
 )
