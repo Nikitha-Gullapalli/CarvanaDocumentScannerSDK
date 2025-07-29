@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "CarvanaDocumentScannerSDK",
+    name: "CarvanaDocumentScannerSDK-",
     platforms: [.iOS(.v16)],
     products: [
         .library(
