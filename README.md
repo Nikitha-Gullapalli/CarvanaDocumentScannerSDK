@@ -325,7 +325,28 @@ git push origin master
 - [ ] Upload XCFramework to release
 - [ ] Calculate and update checksum in Package.swift
 - [ ] Commit and push Package.swift
+- [ ] **CRITICAL: Verify tag points to commit with updated Package.swift**
 - [ ] Verify both Android and iOS can consume new version
+
+#### ⚠️ Tag Verification (Critical Step)
+
+After updating Package.swift, ensure the git tag points to the correct commit:
+
+```bash
+# Check what commit the tag points to
+git ls-remote origin refs/tags/v1.0.X
+
+# Check what commit has the updated Package.swift
+git log --oneline -1
+
+# If they don't match, recreate the tag:
+git tag -d v1.0.X
+git push origin :refs/tags/v1.0.X
+git tag v1.0.X
+git push origin v1.0.X
+```
+
+**Common Issue:** If Package.swift is updated after creating the tag, Xcode will see the old Package.swift and fail to resolve the correct framework.
 
 ---
 
