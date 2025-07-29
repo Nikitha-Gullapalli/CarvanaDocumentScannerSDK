@@ -130,7 +130,7 @@ dependencies {
 
 // Publishing configuration for GitHub Packages
 group = "com.carvana"
-version = "1.0.14"
+version = "1.0.15"
 
 publishing {
     repositories {

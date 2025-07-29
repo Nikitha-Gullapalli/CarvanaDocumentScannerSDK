@@ -50,7 +50,7 @@ Add to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.carvana:document-scanner-sdk-android-release:1.0.14")
+    implementation("com.carvana:document-scanner-sdk-android-release:1.0.15")
     implementation("androidx.activity:activity-ktx:1.8.0")
 }
 ```
@@ -131,13 +131,13 @@ class MainActivity : AppCompatActivity() {
 In Xcode:
 1. Go to **File → Add Package Dependencies**
 2. Enter repository URL: `https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-`
-3. Select version **1.0.14** or "Up to Next Major Version"
+3. Select version **1.0.15** or "Up to Next Major Version"
 4. Add **CarvanaDocumentScannerSDK** to your target
 
 **Alternative - Package.swift:**
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-", from: "1.0.14")
+    .package(url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-", from: "1.0.15")
 ]
 ```
 
@@ -213,13 +213,13 @@ class ViewController: UIViewController {
 **Android (document-scanner-sdk/build.gradle.kts):**
 ```kotlin
 group = "com.carvana"
-version = "1.0.14"  // Increment version
+version = "1.0.15"  // Increment version
 ```
 
 **iOS (Package.swift):**
 ```swift
 // Will be updated automatically to point to new release
-url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases/download/v1.0.14/ComposeApp.xcframework.zip"
+url: "https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases/download/v1.0.15/ComposeApp.xcframework.zip"
 ```
 
 ### 2. Build and Publish
@@ -248,8 +248,8 @@ echo "githubToken=your_github_token" >> gradle.properties
 
 ```bash
 # Create git tag
-git tag v1.0.14
-git push origin v1.0.14
+git tag v1.0.15
+git push origin v1.0.15
 
 # Create GitHub release
 curl -X POST \
@@ -257,9 +257,9 @@ curl -X POST \
   -H "Accept: application/vnd.github.v3+json" \
   https://api.github.com/repos/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases \
   -d '{
-    "tag_name": "v1.0.14",
-    "name": "Release v1.0.14",
-    "body": "iOS and Android SDK release v1.0.14",
+    "tag_name": "v1.0.15",
+    "name": "Release v1.0.15",
+    "body": "iOS and Android SDK release v1.0.15",
     "draft": false,
     "prerelease": false
   }'
@@ -277,9 +277,9 @@ curl -X POST \
 1. **Create Release on GitHub:**
    - Go to: https://github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-/releases
    - Click "Create a new release"
-   - Tag version: `v1.0.14`
-   - Release title: `Release v1.0.14`
-   - Description: `iOS and Android SDK release v1.0.14`
+   - Tag version: `v1.0.15`
+   - Release title: `Release v1.0.15`
+   - Description: `iOS and Android SDK release v1.0.15`
    - Click "Publish release"
 
 2. **Upload XCFramework:**
@@ -301,7 +301,7 @@ shasum -a 256 document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframe
 **Android:**
 ```kotlin
 dependencies {
-    implementation("com.carvana:document-scanner-sdk-android-release:1.0.14")  
+    implementation("com.carvana:document-scanner-sdk-android-release:1.0.15")  
 }
 ```
 
@@ -313,7 +313,7 @@ Xcode will automatically detect new versions when using Swift Package Manager.
 ## Troubleshooting
 
 ### Android
-- **GitHub Packages authentication**: Ensure your GitHub token has `read:packages` scope\n- **AAR metadata missing**: Use the `-android-release` variant: `implementation(\"com.carvana:document-scanner-sdk-android-release:1.0.14\")`
+- **GitHub Packages authentication**: Ensure your GitHub token has `read:packages` scope\n- **AAR metadata missing**: Use the `-android-release` variant: `implementation(\"com.carvana:document-scanner-sdk-android-release:1.0.15\")`
 - **Build errors**: Clean project with `./gradlew clean`
 - **MLKit issues**: Ensure Google Play Services are updated
 
