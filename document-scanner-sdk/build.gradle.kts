@@ -136,7 +136,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK-")
+            url = uri("https://maven.pkg.github.com/Nikitha-Gullapalli/CarvanaDocumentScannerSDK")
             credentials {
                 username = "Nikitha-Gullapalli"
                 password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("githubToken") as String? ?: ""
