@@ -25,13 +25,13 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "CarvanaDocumentScannerSDK"
             isStatic = true
         }
     }
     
     // XCFramework configuration for distribution
-    val xcframeworkName = "ComposeApp"
+    val xcframeworkName = "CarvanaDocumentScannerSDK"
     
     task("buildXCFramework") {
         group = "build"
@@ -130,7 +130,7 @@ dependencies {
 
 // Publishing configuration for GitHub Packages
 group = "com.carvana"
-version = "1.0.15"
+version = "1.0.16"
 
 publishing {
     repositories {
