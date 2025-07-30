@@ -5,7 +5,7 @@ echo "Testing Gradle build..."
 
 if [ $? -eq 0 ]; then
     echo "✅ Build successful!"
-    echo "XCFramework should be at: document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework"
+    echo "XCFramework should be at: document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework"
 else
     echo "❌ Build failed!"
 fi

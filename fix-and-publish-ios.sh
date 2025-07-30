@@ -13,12 +13,12 @@ echo "📱 Step 1: Building XCFramework using Gradle..."
 # Step 2: Create distribution zip
 echo "📦 Step 2: Creating distribution package..."
 cd document-scanner-sdk/build/XCFrameworks/release
-zip -r ComposeApp.xcframework.zip ComposeApp.xcframework
+zip -r CarvanaDocumentScannerSDK.xcframework.zip CarvanaDocumentScannerSDK.xcframework
 cd ../../../..
 
 # Step 3: Calculate checksum and update Package.swift
 echo "🔐 Step 3: Calculating checksum and updating Package.swift..."
-CHECKSUM=$(swift package compute-checksum document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip)
+CHECKSUM=$(swift package compute-checksum document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework.zip)
 echo "Checksum: $CHECKSUM"
 
 # Update Package.swift with the actual checksum
@@ -28,12 +28,12 @@ sed -i '' "s/UPDATE_WITH_ACTUAL_CHECKSUM_FROM_BUILD_SCRIPT/$CHECKSUM/g" Package.
 echo "📲 Step 4: Copying framework to your iOS project..."
 IOS_PROJECT_PATH="/Users/NGullapa/Projects/iOS/Use-this-Project/Carvana.Mobile.Consumer.iOS"
 if [ -d "$IOS_PROJECT_PATH" ]; then
-    cp -r document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework "$IOS_PROJECT_PATH/"
-    echo "✅ Framework copied to: $IOS_PROJECT_PATH/ComposeApp.xcframework"
+    cp -r document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework "$IOS_PROJECT_PATH/"
+    echo "✅ Framework copied to: $IOS_PROJECT_PATH/CarvanaDocumentScannerSDK.xcframework"
     echo "   Now drag this into your Xcode project and set to 'Embed & Sign'"
 else
     echo "⚠️  iOS project path not found. Copy manually:"
-    echo "   From: $(pwd)/document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework"
+    echo "   From: $(pwd)/document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework"
     echo "   To: $IOS_PROJECT_PATH/"
 fi
 
@@ -71,15 +71,15 @@ echo "  📂 Framework copied to your iOS project"
 echo "  🏷️ Version 1.0.7 tagged and pushed"
 echo ""
 echo "📍 Files created:"
-echo "  XCFramework: document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework"
-echo "  Distribution: document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip"
+echo "  XCFramework: document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework"
+echo "  Distribution: document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework.zip"
 echo "  Checksum: $CHECKSUM"
 echo ""
 echo "🚨 NEXT STEPS FOR YOUR iOS PROJECT:"
 echo "  1. Open Xcode project: $IOS_PROJECT_PATH"
 echo "  2. Remove Azure DevOps package dependency from Package Dependencies"
-echo "  3. Drag ComposeApp.xcframework into your project"
+echo "  3. Drag CarvanaDocumentScannerSDK.xcframework into your project"
 echo "  4. Set framework to 'Embed & Sign' in General → Frameworks"
-echo "  5. Import ComposeApp in your Swift files"
+echo "  5. Import CarvanaDocumentScannerSDK in your Swift files"
 echo ""
 echo "✨ Your iOS integration error is now fixed!"

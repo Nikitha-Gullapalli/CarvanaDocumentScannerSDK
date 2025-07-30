@@ -18,19 +18,19 @@ XCFRAMEWORK_DIR="$BUILD_DIR/XCFrameworks/release"
 # Create zip for distribution
 echo "📦 Creating distribution package..."
 cd "$XCFRAMEWORK_DIR"
-zip -r ComposeApp.xcframework.zip ComposeApp.xcframework
+zip -r CarvanaDocumentScannerSDK.xcframework.zip CarvanaDocumentScannerSDK.xcframework
 cd - > /dev/null
 
 # Calculate checksum
-CHECKSUM=$(swift package compute-checksum "$XCFRAMEWORK_DIR/ComposeApp.xcframework.zip")
+CHECKSUM=$(swift package compute-checksum "$XCFRAMEWORK_DIR/CarvanaDocumentScannerSDK.xcframework.zip")
 
 echo ""
 echo "✅ iOS XCFramework built successfully!"
-echo "📍 Location: $XCFRAMEWORK_DIR/ComposeApp.xcframework"
-echo "📦 Distribution package: $XCFRAMEWORK_DIR/ComposeApp.xcframework.zip"
+echo "📍 Location: $XCFRAMEWORK_DIR/CarvanaDocumentScannerSDK.xcframework"
+echo "📦 Distribution package: $XCFRAMEWORK_DIR/CarvanaDocumentScannerSDK.xcframework.zip"
 echo "🔐 Checksum: $CHECKSUM"
 echo ""
 echo "Next steps:"
-echo "1. Upload ComposeApp.xcframework.zip to GitHub releases"
+echo "1. Upload CarvanaDocumentScannerSDK.xcframework.zip to GitHub releases"
 echo "2. Update Package.swift with the checksum: $CHECKSUM"
 echo "3. Commit and tag version 1.0.7"

@@ -10,8 +10,8 @@
 		B9DA97B52DC1472C00A4DA20 /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9DA97B42DC1472C00A4DA20 /* iOSApp.swift */; };
 		B9DA97B72DC1472C00A4DA20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9DA97B62DC1472C00A4DA20 /* ContentView.swift */; };
 		B9DA97B92DC1472D00A4DA20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9DA97B82DC1472D00A4DA20 /* Assets.xcassets */; };
-		B9DA97FA2DC14A1700A4DA20 /* ComposeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9DA97F92DC14A1700A4DA20 /* ComposeApp.framework */; };
-		B9DA97FB2DC14A1700A4DA20 /* ComposeApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9DA97F92DC14A1700A4DA20 /* ComposeApp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B9DA97FA2DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9DA97F92DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework */; };
+		B9DA97FB2DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9DA97F92DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B9DA97FF2DC14A5600A4DA20 /* brandon_bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B9DA97FE2DC14A5600A4DA20 /* brandon_bold.otf */; };
 		B9DA98022DC14AB300A4DA20 /* brandon_regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B9DA98012DC14AB300A4DA20 /* brandon_regular.otf */; };
 /* End PBXBuildFile section */
@@ -23,7 +23,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B9DA97FB2DC14A1700A4DA20 /* ComposeApp.framework in Embed Frameworks */,
+				B9DA97FB2DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -35,7 +35,7 @@
 		B9DA97B42DC1472C00A4DA20 /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		B9DA97B62DC1472C00A4DA20 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B9DA97B82DC1472D00A4DA20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B9DA97F92DC14A1700A4DA20 /* ComposeApp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ComposeApp.framework; path = "../document-scanner-sdk/build/xcode-frameworks/Debug/iphonesimulator17.5/ComposeApp.framework"; sourceTree = "<group>"; };
+		B9DA97F92DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CarvanaDocumentScannerSDK.framework; path = "../document-scanner-sdk/build/xcode-frameworks/Debug/iphonesimulator17.5/CarvanaDocumentScannerSDK.framework"; sourceTree = "<group>"; };
 		B9DA97FE2DC14A5600A4DA20 /* brandon_bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = brandon_bold.otf; sourceTree = "<group>"; };
 		B9DA98012DC14AB300A4DA20 /* brandon_regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = brandon_regular.otf; sourceTree = "<group>"; };
 		B9DA98052DC14AD900A4DA20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9DA97FA2DC14A1700A4DA20 /* ComposeApp.framework in Frameworks */,
+				B9DA97FA2DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 		B9DA97F82DC14A1700A4DA20 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B9DA97F92DC14A1700A4DA20 /* ComposeApp.framework */,
+				B9DA97F92DC14A1700A4DA20 /* CarvanaDocumentScannerSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -8,8 +8,8 @@ echo "Step 1: Building XCFramework..."
 ./build-ios-framework.sh
 
 # Step 2: Verify XCFramework was created
-XCFRAMEWORK_PATH="document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework"
-ZIP_PATH="document-scanner-sdk/build/XCFrameworks/release/ComposeApp.xcframework.zip"
+XCFRAMEWORK_PATH="document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework"
+ZIP_PATH="document-scanner-sdk/build/XCFrameworks/release/CarvanaDocumentScannerSDK.xcframework.zip"
 
 if [ ! -d "$XCFRAMEWORK_PATH" ]; then
     echo "❌ Error: XCFramework not found at $XCFRAMEWORK_PATH"
@@ -57,7 +57,7 @@ dependencies {
 \`\`\`
 
 ### Files in this Release
-- \`ComposeApp.xcframework.zip\` - iOS XCFramework for Swift Package Manager
+- \`CarvanaDocumentScannerSDK.xcframework.zip\` - iOS XCFramework for Swift Package Manager
 - Checksum: \`$CHECKSUM\`
 
 ### Usage
