@@ -6,7 +6,11 @@ import com.carvana.carvana.interfaces.DocumentUploader
 import com.carvana.carvana.sdk.CarvanaDocumentScannerSDKFactory
 import com.carvana.carvana.sdk.SDKConfiguration
 
-fun StartCarvanaDocumentScannerSDKViewController() = ComposeUIViewController {
+fun StartCarvanaDocumentScannerSDKViewController() = ComposeUIViewController(
+    configure = { 
+        enforceStrictPlistSanityCheck = false 
+    }
+) {
     // Create document scanner and uploader instances
     val documentScanner = DocumentScanner()
     val documentUploader = DocumentUploader()
