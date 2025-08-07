@@ -91,6 +91,12 @@ kotlin {
     }
 }
 
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "com.carvana.document_scanner_sdk.generated.resources"
+    generateResClass = auto
+}
+
 android {
     namespace = "com.carvana.carvana"
     compileSdkVersion(libs.versions.android.compileSdk.get().toInt())
