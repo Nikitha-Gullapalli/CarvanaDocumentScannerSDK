@@ -27,6 +27,9 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "CarvanaDocumentScannerSDK"
             isStatic = true
+            
+            // Export Compose resources
+            export(compose.components.resources)
         }
     }
     
@@ -87,6 +90,7 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         iosMain.dependencies {
+            api(compose.components.resources)
         }
     }
 }
